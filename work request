@@ -1,0 +1,9 @@
+val workRequest = PeriodicWorkRequestBuilder<ReminderWorker>(
+    5, TimeUnit.HOURS
+).build()
+
+WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+    "VitalsReminder",
+    ExistingPeriodicWorkPolicy.KEEP,
+    workRequest
+)
