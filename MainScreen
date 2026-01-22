@@ -1,0 +1,43 @@
+@Composable
+fun MainScreen(viewModel: VitalsViewModel) {
+
+    val vitals by viewModel.vitalsList.collectAsState()
+    var showDialog by remember { mutableStateOf(false) }
+
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = { showDialog = true }) {
+                Icon(Icons.Default.Add, contentDescription = "Add Vitals")
+            }
+        }
+    ) { padding ->
+
+        LazyColumn(modifier = Modifier.padding(padding)) {
+            items(vitals) { item ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    elevation = 4.dp
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text("BP: ${item.systolic}/${item.diastolic}")
+                        Text("Heart Rate: ${item.heartRate}")
+                        Text("Weight: ${item.weight} kg")
+                        Text("Baby Kicks: ${item.babyKicks}")
+                    }
+                }
+            }
+        }
+    }
+
+    if (showDialog) {
+        AddVitalsDialog(
+            onDismiss = { showDialog = false },
+            onSubmit = { sys, dia, hr, wt, kicks ->
+                viewModel.addVitals(sys, dia, hr, wt, kicks)
+                showDialog = false
+            }
+        )
+    }
+}
