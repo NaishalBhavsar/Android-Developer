@@ -1,0 +1,10 @@
+class ReminderWorker(
+    context: Context,
+    params: WorkerParameters
+) : Worker(context, params) {
+
+    override fun doWork(): Result {
+        NotificationHelper.showNotification(applicationContext)
+        return Result.success()
+    }
+}
