@@ -1,0 +1,9 @@
+@Dao
+interface VitalsDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertVitals(vitals: VitalsEntity)
+
+    @Query("SELECT * FROM vitals_table ORDER BY timestamp DESC")
+    fun getAllVitals(): Flow<List<VitalsEntity>>
+}
