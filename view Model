@@ -1,0 +1,32 @@
+class VitalsViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository: VitalsRepository
+    val vitalsList: StateFlow<List<VitalsEntity>>
+
+    init {
+        val dao = AppDatabase.getDatabase(application).vitalsDao()
+        repository = VitalsRepository(dao)
+        vitalsList = repository.allVitals
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }
+
+    fun addVitals(
+        sys: Int,
+        dia: Int,
+        heartRate: Int,
+        weight: Float,
+        kicks: Int
+    ) {
+        viewModelScope.launch {
+            repository.addVitals(
+                VitalsEntity(
+                    systolic = sys,
+                    diastolic = dia,
+                    heartRate = heartRate,
+                    weight = weight,
+                    babyKicks = kicks
+                )
+            )
+        }
+    }
+}
