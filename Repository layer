@@ -1,0 +1,8 @@
+class VitalsRepository(private val dao: VitalsDao) {
+
+    val allVitals: Flow<List<VitalsEntity>> = dao.getAllVitals()
+
+    suspend fun addVitals(vitals: VitalsEntity) {
+        dao.insertVitals(vitals)
+    }
+}
