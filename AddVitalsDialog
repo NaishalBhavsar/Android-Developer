@@ -1,0 +1,41 @@
+@Composable
+fun AddVitalsDialog(
+    onDismiss: () -> Unit,
+    onSubmit: (Int, Int, Int, Float, Int) -> Unit
+) {
+    var sys by remember { mutableStateOf("") }
+    var dia by remember { mutableStateOf("") }
+    var hr by remember { mutableStateOf("") }
+    var wt by remember { mutableStateOf("") }
+    var kicks by remember { mutableStateOf("") }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(shape = RoundedCornerShape(16.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
+
+                Text("Log Vitals", fontWeight = FontWeight.Bold)
+
+                OutlinedTextField(sys, { sys = it }, label = { Text("Systolic BP") })
+                OutlinedTextField(dia, { dia = it }, label = { Text("Diastolic BP") })
+                OutlinedTextField(hr, { hr = it }, label = { Text("Heart Rate") })
+                OutlinedTextField(wt, { wt = it }, label = { Text("Weight (kg)") })
+                OutlinedTextField(kicks, { kicks = it }, label = { Text("Baby Kicks") })
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        onSubmit(
+                            sys.toInt(),
+                            dia.toInt(),
+                            hr.toInt(),
+                            wt.toFloat(),
+                            kicks.toInt()
+                        )
+                    }
+                ) {
+                    Text("Submit")
+                }
+            }
+        }
+    }
+}
